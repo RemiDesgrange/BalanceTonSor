@@ -34,6 +34,7 @@ def index_post():
     status, results, tracedata = read.sorparse(filename, debug=True, logfile=devnull)
     if status != 'ok':
         raise InvalidUsage('There where an error in the processing', status_code=500)
+    os.remove(filename)
     return jsonify(results)
 
 
