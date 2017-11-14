@@ -2,7 +2,7 @@ import io
 import os
 from flask import Flask, Response, jsonify, request
 from random import randint
-from pyOTDR import read
+from .pyOTDR import read
 
 app = Flask('BalanceTonSor')
 
