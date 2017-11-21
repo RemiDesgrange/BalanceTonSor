@@ -2,3 +2,4 @@ flask==0.12
 utils
 crcmod
 lazyxml
+raven[flask]

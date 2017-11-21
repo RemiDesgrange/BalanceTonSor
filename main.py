@@ -3,8 +3,11 @@ import os
 from flask import Flask, Response, jsonify, request
 from random import randint
 import pyOTDR.read as read
+from raven.contrib.flask import Sentry
 
 app = Flask('BalanceTonSor')
+Sentry(app)
+
 
 UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__))
 
@@ -62,6 +65,7 @@ def handle_exception(error):
     response = jsonify({'error': str(error)})
     response.status_code = 500
     return response
+
 
 if __name__ == '__main__':
     app.run()
