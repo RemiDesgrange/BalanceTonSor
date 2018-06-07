@@ -4,12 +4,13 @@ from flask import Flask, Response, jsonify, request
 from random import randint
 import pyOTDR.read as read
 from raven.contrib.flask import Sentry
+from tempfile import NamedTemporaryFile
 
 app = Flask('BalanceTonSor')
 Sentry(app)
 
 
-UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__))
+#UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__))
 
 @app.route('/', methods=['GET'])
 def index_get():
@@ -30,15 +31,12 @@ def index_post():
     if not raw_data:
         raise InvalidUsage('You need to provide a sor file')
     # the lib kind of sucks in file mgmt, so writing the file to disk (tmp)  
-    filename = UPLOAD_FOLDER + '/tmp.file' + str(randint(1, 100))
-    with open(filename, 'wb') as f:
+    with NamedTemporaryFile('wb') as f:
         f.write(raw_data)
-    devnull = open(os.devnull, "w")
-    status, results, tracedata = read.sorparse(filename, debug=True, logfile=devnull)
-    if status != 'ok':
-        raise InvalidUsage('There where an error in the processing', status_code=500)
-    os.remove(filename)
-    return jsonify(results)
+        status, results, tracedata = read.sorparse(f.name)
+        if status != 'ok':
+            raise InvalidUsage('There where an error in the processing', status_code=500)
+        return jsonify(results)
 
 
 class InvalidUsage(Exception):
