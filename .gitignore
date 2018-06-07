@@ -42,6 +42,8 @@ coverage.xml
 .hypothesis/
 
 
+.venv
+.env
 
 # Flask stuff:
 instance/
