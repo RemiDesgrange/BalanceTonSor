@@ -1,8 +1,0 @@
-{
-    "build": {
-        "folder": "."
-    },
-    "deploy": {
-        "module": "main:app"
-    }
-}
