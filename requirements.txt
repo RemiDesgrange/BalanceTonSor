@@ -3,6 +3,6 @@ utils
 crcmod
 lazyxml
 raven[flask]
-pyOTDR==1.0.1
+pyOTDR==1.0.0
 gunicorn
 pytz
