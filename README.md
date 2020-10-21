@@ -1,3 +1,5 @@
+Test
+
 # Balance Ton SOR
 
 This little program help you translate SOR files (from reflectormeter) to json. To process a SOR simplfy send it via post (curl -X POST --data-binary @file.sor http://localhost/)
