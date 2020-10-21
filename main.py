@@ -34,8 +34,6 @@ def index_post():
     with NamedTemporaryFile('wb') as f:
         f.write(raw_data)
         status, results, tracedata = read.sorparse(f.name)
-        if status != 'ok':
-            raise InvalidUsage('There where an error in the processing', status_code=500)
         return jsonify(results)
 
 

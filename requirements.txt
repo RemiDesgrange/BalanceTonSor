@@ -3,5 +3,5 @@ utils
 crcmod
 lazyxml
 raven[flask]
-git+https://github.com/sid5432/pyOTDR.git
+pyOTDR==1.0.1
 gunicorn
