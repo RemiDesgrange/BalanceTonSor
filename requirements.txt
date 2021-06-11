@@ -1,8 +1,4 @@
 flask
-utils
-crcmod
-lazyxml
-raven[flask]
-pyOTDR==1.0.1
+sentry-sdk[flask]
+pyOTDR
 gunicorn
-pytz

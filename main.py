@@ -2,12 +2,14 @@ import io
 import os
 from flask import Flask, Response, jsonify, request
 from random import randint
-import pyOTDR.read as read
-from raven.contrib.flask import Sentry
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+import pyotdr.read as read
 from tempfile import NamedTemporaryFile
 
+
+sentry_sdk.init(integrations=[FlaskIntegration()])
 app = Flask('BalanceTonSor')
-Sentry(app)
 
 
 #UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__))
@@ -51,11 +53,14 @@ class InvalidUsage(Exception):
         rv['message'] = self.message
         return rv
 
+
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
     response.status_code = error.status_code
     return response
+
+
 @app.errorhandler(Exception)
 def handle_exception(error):
     response = jsonify({'error': str(error)})
