@@ -6,37 +6,47 @@ import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 import pyotdr.read as read
 from tempfile import NamedTemporaryFile
-
+from typing import BinaryIO, Tuple
+from io import BytesIO
+import traceback
 
 sentry_sdk.init(integrations=[FlaskIntegration()])
 app = Flask('BalanceTonSor')
 
 
-#UPLOAD_FOLDER = os.path.dirname(os.path.realpath(__file__))
-
-@app.route('/', methods=['GET'])
-def index_get():
+@app.get('/')
+def index_get() -> Response:
     """
     :return Response
     """
-    return jsonify({'name': 'BalanceTonSor', 
-                    'details': 'This little api take sor file as input and return a json'
+    return jsonify({'name': 'BalTanceTonSor',
+                    'details': 'This little api take sor file as input and return a json. Two endpoints: "/metadata" and "/data_points"'
                    })
 
+def read_sor_file(sor_file_binary: bytes) -> Tuple[str, dict, list]:
+    with NamedTemporaryFile('wb') as f:
+        f.write(sor_file_binary)
+        return read.sorparse(f.name)
 
-@app.route('/', methods=['POST'])
-def index_post():
-    """
-    :return Response
-    """ 
+@app.post('/data_points')
+def data_points() -> Response:
     raw_data = request.get_data()
     if not raw_data:
         raise InvalidUsage('You need to provide a sor file')
-    # the lib kind of sucks in file mgmt, so writing the file to disk (tmp)  
-    with NamedTemporaryFile('wb') as f:
-        f.write(raw_data)
-        status, results, tracedata = read.sorparse(f.name)
-        return jsonify(results)
+    _, _, data_points = read_sor_file(raw_data)
+    return jsonify(data_points)
+
+@app.post('/metadata')
+def metadata():
+    """
+    :return Response
+    """
+    raw_data = request.get_data()
+    print("yo")
+    if not raw_data:
+        raise InvalidUsage('You need to provide a sor file')
+    status, results, tracedata = read_sor_file(raw_data)
+    return jsonify(results)
 
 
 class InvalidUsage(Exception):

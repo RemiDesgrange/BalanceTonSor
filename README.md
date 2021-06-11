@@ -8,8 +8,6 @@ This work has been made possible by the excellent work of [https://github.com/si
 
 ## Install
 
-**⚠  This app is python2 !! ⚠**
-
 Any compliant wsgi server is capable of running this little app. No database. No storage. Just this
 stateless app. Yes it's webscale.
 
