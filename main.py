@@ -19,7 +19,7 @@ def index_get() -> Response:
     """
     :return Response
     """
-    return jsonify({'name': 'BalTanceTonSor',
+    return jsonify({'name': 'BalTanceTonSor blah',
                     'details': 'This little api take sor file as input and return a json. Two endpoints: "/metadata" and "/data_points"'
                    })
 
