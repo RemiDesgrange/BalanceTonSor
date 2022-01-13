@@ -1,4 +1,4 @@
 flask
 sentry-sdk[flask]
-pyOTDR
+pyotdr
 gunicorn
